@@ -20,7 +20,6 @@ Current Version:
     Complete automation step (if it will be included)
     Complete backup scripts with source directories (may exclude from github... maybe)
     Test final version
-    Add License
     Make a proper read-me file
     Clean GUI a bit
 
