@@ -132,5 +132,4 @@ Write-Host "Dexis Backup Complete!"
 Wite-Host "Shutting down computer..."
 ## When backup is complete, shut down computer ##
 #Stop-Computer
-
 }
