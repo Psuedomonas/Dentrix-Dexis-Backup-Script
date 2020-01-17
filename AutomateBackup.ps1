@@ -18,7 +18,7 @@ $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
 
 ## Make backup directory ##
 $time = Get-Date -Format "MM.dd.yyyy"
-New-Item -Path $savedirectory -Name $time -ItemType "directory"
+New-Item -Path $savedirectory -Name $time -ItemType "directory" #throws null error for path
 
 
 ###    Backup Dentrix     ###
