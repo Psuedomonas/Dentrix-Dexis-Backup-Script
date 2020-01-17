@@ -1,6 +1,12 @@
 # Backup-Powershell
 Automate and configure file backups with powershell
 
-Current plan is to make an executable file that is clicked to activate. The script, AutomateBackup.ps1, will then commence backing up essential files. Preferably, it will operate the applicable software to prepare optimal backup conditions in compliance with my standard practices. The order of script operations may require changing to minimize complexity.
+Powershell script to back up two folders (dentrix and dexis). The script is launched via batch script to avoid altering powershell security settings.
 
-After the backup is complete, the script will shut down the computer. This enables the user to not have to manually
+Currently issue with with applying user input of backup directory to a usable $savedirectory variable for the backup path.
+
+
+
+
+
+
