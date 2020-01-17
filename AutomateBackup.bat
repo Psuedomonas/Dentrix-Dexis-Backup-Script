@@ -2,7 +2,7 @@
 REM Goto ps1 directory
 REM cd C:\IT
 
-REM launch powershell, bypass security policy
+REM launch powershell, bypass security policy, run script with same name as batch file
 PowerShell.exe -ExecutionPolicy Bypass -Command "& '%~dpn0.ps1'"
 
 REM If admin is needed:
