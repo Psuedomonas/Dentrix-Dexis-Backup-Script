@@ -10,11 +10,18 @@ function get-something {
 }
 iex (show-command get-something -passthru)
 
-## Make Dentrix backup directory ##
-$time = Get-Date -Format "MM.dd.yyyy"
-$name = "dentrix" + $time
-New-Item -Path "c:\" -Name $name -ItemType "directory"
 
+## try to pause the program to put the input into $savedirectory, must be doing something wrong
+Write-Host -NoNewLine 'Press any key to continue...';
+$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
+
+
+## Make backup directory ##
+$time = Get-Date -Format "MM.dd.yyyy"
+New-Item -Path $savedirectory -Name $time -ItemType "directory"
+
+
+###    Backup Dentrix     ###
 ## Potentially automate cmds in Dexis and/or Dentrix ##
 ## Unmodified code for stack overflow ##
 #$wshell = New-Object -ComObject wscript.shell;
@@ -25,10 +32,8 @@ New-Item -Path "c:\" -Name $name -ItemType "directory"
 ## Perform Backup ##
 #Copy-Item "C:\Dentrix" -Destination "X:\" -Recurse
 
-## Make Dexis backup directory ##
-$name = "dexis" + $time
-New-Item -Path "c:\" -Name $name -ItemType "directory"
 
+###    Backup Dexis    ###
 ## Potentially automate cmds in Dexis and/or Dentrix ##
 ## Unmodified code for stack overflow ##
 #$wshell = New-Object -ComObject wscript.shell;
@@ -36,7 +41,8 @@ New-Item -Path "c:\" -Name $name -ItemType "directory"
 #Sleep 1
 #$wshell.SendKeys('~')
 
-#Copy-Item "" -Destination "" -Recurse
+## Perform Backup ##
+#Copy-Item "C:\Dexis" -Destination "X:\" -Recurse
 
 ## When backup is complete, shut down computer ##
 #Stop-Computer
