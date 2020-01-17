@@ -129,7 +129,7 @@ Write-Host "Peforming the Dexis Backup..."
 #Copy-Item "C:\Dexis" -Destination "X:\" -Recurse
 Write-Host "Dexis Backup Complete!"
 
-Wite-Host "Shutting down computer..."
+Write-Host "Shutting down computer..."
 ## When backup is complete, shut down computer ##
 #Stop-Computer
 }
