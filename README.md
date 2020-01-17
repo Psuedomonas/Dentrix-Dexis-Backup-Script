@@ -1,7 +1,7 @@
 # Backup-Powershell
 Automate and configure file backups with powershell
 
-Powershell script to back up two folders (dentrix and dexis). The script is launched via batch script to avoid altering powershell security settings. Uses windows forms for GUI for user input
+Powershell script to back up two folders (dentrix and dexis). The script is launched via batch script to avoid altering powershell security settings. Uses windows forms for GUI for user input.
 
 ToDo:
 * Preferably provide a Windows form that allows path selection for backup for ease of use.
