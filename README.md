@@ -16,6 +16,7 @@ Simply place both scripts in the same directory.
 
 Current Version:
 
+    Shutdown feature
     Preferably provide a Windows form directory widget for backup path selection for ease of use.
     Complete automation step (if it will be included)
     Complete backup scripts with source directories (may exclude from github... maybe)
