@@ -30,7 +30,7 @@ $Lbl3.AutoSize = $true
 $main_form.Controls.Add($Lbl3)
 
 $Lbl4 = New-Object System.Windows.Forms.Label
-$Lbl4.Text = "Step 4. Select whether to shut down computer below"
+$Lbl4.Text = "Step 4. Select whether to shut down computer after backup below"
 $Lbl4.Location  = New-Object System.Drawing.Point(0,70)
 $Lbl4.AutoSize = $true
 $main_form.Controls.Add($Lbl4)
