@@ -128,15 +128,15 @@ $BtnCC.Add_Click(
 	$main_form.Close()
 }
 )
-
+## Start the gui! ##
 $main_form.ShowDialog()
 
-## Backup Operations - Boolean to prevent backup without GUI instructions
+## Backup Operations - Boolean to prevent backup without GUI instructions ##
 if ($global:startTheBackup)
 {
+	$time = Get-Date -Format "MM.dd.yyyy" #get the time for the backup folder name
+	if ($global:overwriteFolder) #do we use the overwrite script or not?
 	## Overwrite backup directory ##
-	$time = Get-Date -Format "MM.dd.yyyy"
-	if ($global:overwriteFolder)
 	{
 		Write-Host "Overwriting backup at: " $global:x
 		New-Item -Path $global:x -Name $time -ItemType "directory" -Force
@@ -169,10 +169,10 @@ if ($global:startTheBackup)
 		Copy-Item "C:\Dexis" -Destination $backupDir -Recurse
 		Write-Host "Dexis Backup Complete!"
 	}
-	if ($global:shutdownComp)
+	if ($global:shutdownComp) #Shuts down computer if true
 	{
 		Write-Host "Shutting down computer..."
 		## When backup is complete, shut down computer ##
-		#Stop-Computer
+		Stop-Computer
 	}
 }
