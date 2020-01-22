@@ -1,7 +1,6 @@
 ## Boolean globals to direct backup script
 $global:startTheBackup = $false
 $global:shutdownComp = $false
-$global:overwriteFolder = $false
 
 ## Make GUI
 Add-Type -assembly System.Windows.Forms
@@ -30,7 +29,7 @@ $Lbl3.AutoSize = $true
 $main_form.Controls.Add($Lbl3)
 
 $Lbl4 = New-Object System.Windows.Forms.Label
-$Lbl4.Text = "Step 4. Select whether to shut down computer after backup below"
+$Lbl4.Text = "Step 4. Select whether to shut down computer below"
 $Lbl4.Location  = New-Object System.Drawing.Point(0,70)
 $Lbl4.AutoSize = $true
 $main_form.Controls.Add($Lbl4)
@@ -60,6 +59,7 @@ $BtnCC.Text = "Cancel"
 $main_form.Controls.Add($BtnCC)
 
 $FolderBrowserDialog = New-Object System.Windows.Forms.FolderBrowserDialog
+
 
 $BtnYes.Add_Click(
 {
@@ -127,48 +127,29 @@ $BtnCC.Add_Click(
 	$main_form.Close()
 }
 )
-## Start the gui! ##
+
 $main_form.ShowDialog()
 
-## Backup Operations - Boolean to prevent backup without GUI instructions ##
+## Backup Operations - Boolean to prevent backup without GUI instructions
 if ($global:startTheBackup)
 {
-	$time = Get-Date -Format "MM.dd.yyyy" #get the time for the backup folder name
-	if ($global:overwriteFolder) #do we use the overwrite script or not?
-	## Overwrite backup directory ##
-	{
-		Write-Host "Overwriting backup at: " $global:x
-		New-Item -Path $global:x -Name $time -ItemType "directory" -Force
-		$backupDir = $global:x + '/' + $time
+	## Peforms backup directory - Overwrite files applicable to gui selection##
+	$time = Get-Date -Format "MM.dd.yyyy"
+	Write-Host "Peforming backup at: " $global:x
+	New-Item -Path $global:x -Name $time -ItemType "directory" -Force
+	$backupDir = $global:x + '/' + $time
 		
-		## Perform Dentrix Backup ##
-		Write-Host "Overwriting the Dentrix Backup..."
-		Copy-Item "C:\Dentrix" -Destination $backupDir -Recurse -Force
-		Write-Host "Dentrix Backup Complete!"
+	## Perform Dentrix Backup ##
+	Write-Host "Performing the Dentrix Backup..."
+	Copy-Item "C:\Dentrix" -Destination $backupDir -Recurse -Force
+	Write-Host "Dentrix Backup Complete!"
 
-		## Perform Dexis Backup ##
-		Write-Host "Overwriting the Dexis Backup..."
-		Copy-Item "C:\Dexis" -Destination $backupDir -Recurse -Force
-		Write-Host "Dexis Backup Complete!"
-	}
-	else
-	{
-		## Make backup directory ##
-		Write-Host "Peforming backup to: " $global:x
-		New-Item -Path $global:x -Name $time -ItemType "directory"
-		$backupDir = $global:x + '/' + $time
-		
-		## Perform Backup ##
-		Write-Host "Peforming the Dentrix Backup..."
-		Copy-Item "C:\Dentrix" -Destination $backupDir -Recurse
-		Write-Host "Dentrix Backup Complete!"
+	## Perform Dexis Backup ##
+	Write-Host "Performing the Dexis Backup..."
+	Copy-Item "C:\Dexis" -Destination $backupDir -Recurse -Force
+	Write-Host "Dexis Backup Complete!"
 
-		## Perform Backup ##
-		Write-Host "Peforming the Dexis Backup..."
-		Copy-Item "C:\Dexis" -Destination $backupDir -Recurse
-		Write-Host "Dexis Backup Complete!"
-	}
-	if ($global:shutdownComp) #Shuts down computer if true
+	if ($global:shutdownComp) #do we shut the computer down
 	{
 		Write-Host "Shutting down computer..."
 		## When backup is complete, shut down computer ##
