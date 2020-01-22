@@ -1,5 +1,7 @@
-## Boolean to start/prevent backup script
+## Boolean globals to direct backup script
 $global:startTheBackup = $false
+$global:shutdownComp = $false
+$global:overwriteFolder = $false
 
 ## Make GUI
 Add-Type -assembly System.Windows.Forms
@@ -9,127 +11,167 @@ $main_form.Width = 600
 $main_form.Height = 400
 $main_form.AutoSize = $true
 
-$Label = New-Object System.Windows.Forms.Label
-$Label.Text = "Enter Backup Directory:"
-$Label.Location  = New-Object System.Drawing.Point(0,10)
-$Label.AutoSize = $true
-$main_form.Controls.Add($Label)
+$Lbl1 = New-Object System.Windows.Forms.Label
+$Lbl1.Text = "Step 1: Run _ServerAdmin"
+$Lbl1.Location  = New-Object System.Drawing.Point(0,10)
+$Lbl1.AutoSize = $true
+$main_form.Controls.Add($Lbl1)
 
-$TextBox = New-Object System.Windows.Forms.TextBox
-$TextBox.Width = 300
-$TextBox.Height = 30
-$TextBox.Location  = New-Object System.Drawing.Point(0,30)
-$main_form.Controls.Add($TextBox)
+$Lbl2 = New-Object System.Windows.Forms.Label
+$Lbl2.Text = "Step 2: Select Export Backup Tab"
+$Lbl2.Location  = New-Object System.Drawing.Point(0,30)
+$Lbl2.AutoSize = $true
+$main_form.Controls.Add($Lbl2)
 
-$Button = New-Object System.Windows.Forms.Button
-$Button.Location = New-Object System.Drawing.Size(30,50)
-$Button.Size = New-Object System.Drawing.Size(120,30)
-$Button.Text = "Ok"
-$main_form.Controls.Add($Button)
+$Lbl3 = New-Object System.Windows.Forms.Label
+$Lbl3.Text = "Step 3: Press Export Backup Button"
+$Lbl3.Location  = New-Object System.Drawing.Point(0,50)
+$Lbl3.AutoSize = $true
+$main_form.Controls.Add($Lbl3)
 
-$confirm_form = New-Object System.Windows.Forms.Form
-$confirm_form.Text = 'Select Backup Directory'
-$confirm_form.Width = 300
-$confirm_form.Height = 300
-$confirm_form.AutoSize = $true
+$Lbl4 = New-Object System.Windows.Forms.Label
+$Lbl4.Text = "Step 4. Select whether to shut down computer after backup below"
+$Lbl4.Location  = New-Object System.Drawing.Point(0,70)
+$Lbl4.AutoSize = $true
+$main_form.Controls.Add($Lbl4)
 
-$Lbl = New-Object System.Windows.Forms.Label
-$Lbl.Text = "Backup Files to: "
-$Lbl.Location  = New-Object System.Drawing.Point(0,10)
-$Lbl.AutoSize = $true
-$confirm_form.Controls.Add($Lbl)
-
-$Lb2 = New-Object System.Windows.Forms.Label
-$Lb2.Text = ""
-$Lb2.Location  = New-Object System.Drawing.Point(0,30)
-$Lb2.AutoSize = $true
-$confirm_form.Controls.Add($Lb2)
+$Lbl5 = New-Object System.Windows.Forms.Label
+$Lbl5.Text = "Shutdown computer after backup?"
+$Lbl5.Location  = New-Object System.Drawing.Point(0,100)
+$Lbl5.AutoSize = $true
+$main_form.Controls.Add($Lbl5)
 
 $BtnYes = New-Object System.Windows.Forms.Button
-$BtnYes.Location = New-Object System.Drawing.Size(0,50)
+$BtnYes.Location = New-Object System.Drawing.Size(10,120)
 $BtnYes.Size = New-Object System.Drawing.Size(40,30)
 $BtnYes.Text = "Yes"
-$confirm_form.Controls.Add($BtnYes)
+$main_form.Controls.Add($BtnYes)
 
 $BtnNo = New-Object System.Windows.Forms.Button
-$BtnNo.Location = New-Object System.Drawing.Size(60,50)
-$BtnNo.Size = New-Object System.Drawing.Size(70,30)
-$BtnNo.Text = "Oops, No!"
-$confirm_form.Controls.Add($BtnNo)
+$BtnNo.Location = New-Object System.Drawing.Size(60,120)
+$BtnNo.Size = New-Object System.Drawing.Size(40,30)
+$BtnNo.Text = "No"
+$main_form.Controls.Add($BtnNo)
 
-$Button.Add_Click(
+$BtnCC = New-Object System.Windows.Forms.Button
+$BtnCC.Location = New-Object System.Drawing.Size(110,120)
+$BtnCC.Size = New-Object System.Drawing.Size(60,30)
+$BtnCC.Text = "Cancel"
+$main_form.Controls.Add($BtnCC)
+
+$FolderBrowserDialog = New-Object System.Windows.Forms.FolderBrowserDialog
+
+$BtnYes.Add_Click(
 {
-	if (!$TextBox.Text -eq "") 
+	[void] $FolderBrowserDialog.ShowDialog()
+	if (!$FolderBrowserDialog.SelectedPath -eq "") 
 	{
-		if (Test-Path $TextBox.Text -PathType Any) 
+		$time = Get-Date -Format "MM.dd.yyyy"
+		$testDir = $FolderBrowserDialog.SelectedPath + '\' + $time
+		$alreadyThere = Test-Path $testDir -PathType Any
+		if (!$alreadyThere)
 		{
-			$global:x=$TextBox.Text
-			$Lb2.Text = $global:x
-			$confirm_form.ShowDialog()
+			$main_form.Close()
+			$global:startTheBackup = $true
+			$global:shutdownComp = $true
+			$global:x = $FolderBrowserDialog.SelectedPath
+		}
+		else
+		{
+			$Return=[System.Windows.Forms.MessageBox]::Show('Click OK to overwrite, or Cancel','Folder Already Exists!','okcancel')
+			if ($Return -eq 'OK')
+			{
+				$global:overwriteFolder = $true
+				$main_form.Close()
+				$global:startTheBackup = $true
+				$global:shutdownComp = $true
+				$global:x = $FolderBrowserDialog.SelectedPath
+			}
 		}
 	}
 }
 )
 
-$BtnYes.Add_Click(
-{
-	$global:startTheBackup = $true
-	$main_form.Close()
-	$confirm_form.Close()
-	
-}
-)
-
 $BtnNo.Add_Click(
 {
-	$confirm_form.Close()
+	[void] $FolderBrowserDialog.ShowDialog()
+	if (!$FolderBrowserDialog.SelectedPath -eq "") 
+	{
+		$time = Get-Date -Format "MM.dd.yyyy"
+		$testDir = $FolderBrowserDialog.SelectedPath + '\' + $time
+		$alreadyThere = Test-Path $testDir -PathType Any
+		if (!$alreadyThere)
+		{
+			$main_form.Close()
+			$global:startTheBackup = $true
+			$global:shutdownComp = $false
+			$global:x = $FolderBrowserDialog.SelectedPath
+		}
+		else
+		{
+			$Return=[System.Windows.Forms.MessageBox]::Show('Click OK to overwrite, or Cancel','Folder Already Exists!','okcancel')
+			if ($Return -eq 'OK')
+			{
+				$global:overwriteFolder = $true
+				$main_form.Close()
+				$global:startTheBackup = $true
+				$global:shutdownComp = $false
+				$global:x = $FolderBrowserDialog.SelectedPath
+			}
+		}
+	}
 }
 )
-	
-
+$BtnCC.Add_Click(
+{
+	$main_form.Close()
+}
+)
+## Start the gui! ##
 $main_form.ShowDialog()
 
-## Backup Operations - Boolean to prevent backup without GUI instructions
+## Backup Operations - Boolean to prevent backup without GUI instructions ##
 if ($global:startTheBackup)
 {
-## Make backup directory ##
-$time = Get-Date -Format "MM.dd.yyyy"
-Write-Host "Peforming backup to: " $global:x
-New-Item -Path $global:x -Name $time -ItemType "directory" #throws null error for path
+	$time = Get-Date -Format "MM.dd.yyyy" #get the time for the backup folder name
+	if ($global:overwriteFolder) #do we use the overwrite script or not?
+	## Overwrite backup directory ##
+	{
+		Write-Host "Overwriting backup at: " $global:x
+		New-Item -Path $global:x -Name $time -ItemType "directory" -Force
+		$backupDir = $global:x + '/' + $time
+		
+		## Perform Dentrix Backup ##
+		Write-Host "Overwriting the Dentrix Backup..."
+		Copy-Item "C:\Dentrix" -Destination $backupDir -Recurse -Force
+		Write-Host "Dentrix Backup Complete!"
 
-###    Backup Dentrix     ###
-Write-Host "Launch Dentrix Backup Application..."
-Write-Host "Automating Backup..."
-Write-Host "Closing Dentrix Backup Application."
-## Potentially automate cmds in Dexis and/or Dentrix ##
-## Unmodified code for stack overflow ##
-#$wshell = New-Object -ComObject wscript.shell;
-#$wshell.AppActivate('title of the application window')
-#Sleep 1
-#$wshell.SendKeys('~')
+		## Perform Dexis Backup ##
+		Write-Host "Overwriting the Dexis Backup..."
+		Copy-Item "C:\Dexis" -Destination $backupDir -Recurse -Force
+		Write-Host "Dexis Backup Complete!"
+	}
+	else
+	{
+		## Make backup directory ##
+		Write-Host "Peforming backup to: " $global:x
+		New-Item -Path $global:x -Name $time -ItemType "directory"
+		$backupDir = $global:x + '/' + $time
+		
+		## Perform Backup ##
+		Write-Host "Peforming the Dentrix Backup..."
+		Copy-Item "C:\Dentrix" -Destination $backupDir -Recurse
+		Write-Host "Dentrix Backup Complete!"
 
-## Perform Backup ##
-Write-Host "Peforming the Dentrix Backup..."
-#Copy-Item "C:\Dentrix" -Destination "X:\" -Recurse
-Write-Host "Dentrix Backup Complete!"
-
-###    Backup Dexis    ###
-Write-Host "Launch Dexis Backup Application..."
-Write-Host "Automating Backup..."
-Write-Host "Closing Dexis Backup Application."
-## Potentially automate cmds in Dexis and/or Dentrix ##
-## Unmodified code for stack overflow ##
-#$wshell = New-Object -ComObject wscript.shell;
-#$wshell.AppActivate('title of the application window')
-#Sleep 1
-#$wshell.SendKeys('~')
-
-## Perform Backup ##
-Write-Host "Peforming the Dexis Backup..."
-#Copy-Item "C:\Dexis" -Destination "X:\" -Recurse
-Write-Host "Dexis Backup Complete!"
-
-Write-Host "Shutting down computer..."
-## When backup is complete, shut down computer ##
-#Stop-Computer
+		## Perform Backup ##
+		Write-Host "Peforming the Dexis Backup..."
+		Copy-Item "C:\Dexis" -Destination $backupDir -Recurse
+		Write-Host "Dexis Backup Complete!"
+	}
+	if ($global:shutdownComp) #Shuts down computer if true
+	{
+		Write-Host "Shutting down computer..."
+		## When backup is complete, shut down computer ##
+		Stop-Computer
+	}
 }
