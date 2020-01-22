@@ -61,7 +61,6 @@ $main_form.Controls.Add($BtnCC)
 
 $FolderBrowserDialog = New-Object System.Windows.Forms.FolderBrowserDialog
 
-
 $BtnYes.Add_Click(
 {
 	[void] $FolderBrowserDialog.ShowDialog()
