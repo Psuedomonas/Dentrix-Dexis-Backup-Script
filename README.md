@@ -2,6 +2,7 @@
 Automate and configure file backups with powershell
 
 Backup-Powershell is a batch script and a powershell script that automates backups of Dentrix and Dexis software, then shuts down the computer.
+It provides the opportunity to overwrite preexisting backups if they exist, and the option to not shutdown the computer
 
 The script is activated by the user clicking/launching the batch file
 > AutomateBackup.bat
@@ -12,22 +13,14 @@ This launches the powershell script without requiring changes to powershell scri
 Simply place both scripts in the same directory.
 
 
-### Roadmap
+### Future Updates
+Clean up labels in gui for clear instructions.
 
-Current Version:
 
-    Shutdown feature
-    Preferably provide a Windows form directory widget for backup path selection for ease of use.
-    Complete automation step (if it will be included)
-    Complete backup scripts with source directories (may exclude from github... maybe)
-    Test final version
-    Make a proper read-me file
-    Clean GUI a bit
 
-Future Version(s):
 
-    Update for later releases of Dentrix and Dexis
-    Any applicable optimizations for end user
+
+
 
 
 
