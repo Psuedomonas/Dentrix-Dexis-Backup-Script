@@ -69,14 +69,14 @@ $BtnYes.Add_Click(
 		$time = Get-Date -Format "MM.dd.yyyy"
 		$testDir = $FolderBrowserDialog.SelectedPath + '\' + $time
 		$alreadyThere = Test-Path $testDir -PathType Any
-		if (!$alreadyThere)
+		if (!$alreadyThere) # Check if file exists
 		{
 			$main_form.Close()
 			$global:startTheBackup = $true
 			$global:shutdownComp = $true
 			$global:x = $FolderBrowserDialog.SelectedPath
 		}
-		else
+		else	# File exists!
 		{
 			$Return=[System.Windows.Forms.MessageBox]::Show('Click OK to overwrite, or Cancel','Folder Already Exists!','okcancel')
 			if ($Return -eq 'OK')
@@ -127,6 +127,7 @@ $BtnCC.Add_Click(
 	$main_form.Close()
 }
 )
+Start-Transcript -path C:\UserLog.txt -appen ##Adjust for usage machine
 
 $main_form.ShowDialog()
 
@@ -146,12 +147,18 @@ if ($global:startTheBackup)
 
 	## Perform Dexis Backup ##
 	Write-Host "Performing the Dexis Backup..."
+	## Need to escalated copy permissions
 	Copy-Item "C:\Dexis" -Destination $backupDir -Recurse -Force
 	Write-Host "Dexis Backup Complete!"
 
 	if ($global:shutdownComp) #do we shut the computer down
 	{
 		Write-Host "Shutting down computer..."
+		## Stop logging
+		Stop-Transcript
+		## Stop processes that prevent shutdown
+		#Stop-Process
+		#Stop-Process
 		## When backup is complete, shut down computer ##
 		Stop-Computer
 	}
