@@ -15,6 +15,7 @@ Simply place both scripts in the same directory.
 ### Development ###
 * Cannot copy an essential file from the dexis directory. This is either becuase the file is locked as it is in use, or mirely a user escalation is required. This issue need to to be fixed.
 * Some processes may still prevent windows from properly shutting down. These processes need to be noted so they can be scripted to shut down.
+* May wish to automate shutdown without backup? Not sure if useful.
 
 
 
