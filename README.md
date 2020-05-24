@@ -12,6 +12,11 @@ This launches the powershell script without requiring changes to powershell scri
 ### To Install (if needed)
 Simply place both scripts in the same directory.
 
+### Development ###
+* Cannot copy an essential file from the dexis directory. This is either becuase the file is locked as it is in use, or mirely a user escalation is required. This issue need to to be fixed.
+* Some processes may still prevent windows from properly shutting down. These processes need to be noted so they can be scripted to shut down.
+
+
 
 ### Future Updates
 Clean up labels in gui for clear instructions.
