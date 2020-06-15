@@ -40,7 +40,7 @@ The current edition works best using the backup directories of both programs. Bo
 
 
 ### Development
-Now a parallel backup version and a procedural backup verion. Both have logging on for now, to look for
+Now a parallel backup version and a procedural backup verion. Both have logging on for now to examine time efficency of parallel.
 
 
 ### Future Updates
