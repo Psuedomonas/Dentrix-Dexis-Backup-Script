@@ -10,13 +10,13 @@ This launches the powershell script without requiring changes to powershell scri
 
 ### Parallel Versus Procedural
 There are two versions in this repository
-this (master) = Procedural
+master = Procedural
   This conducts each backup 1 at a time. Advantage: Minimal fragmentation (if applicable). Cons: Slower (testing in progress).
 
-Parallel
+this branch = Parallel
   This conducts both backups at the same time. Advantage: Probably faster. Cons: Possible fragmentation of backup on drive.
 
-I will be testing both methods. If parallel is faster, I will use this as a primary, as fragmentation of backups is not a concern.
+I will be testing both methods. If parallel is faster, I will use this as a primary, as fragmentation created at this scale (if applicable) with backups is not something I am concerned about.
 
 ### To Install (if needed)
 Simply place both scripts in the same directory.
