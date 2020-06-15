@@ -1,7 +1,10 @@
 ## Directories to backup, set these variables
 $global:dentrix = "C:\Dentrix"
 $global:dexis = "C:\Dexis"
-$logDirectory = "C:\NicksLog\AutoBackupProcedLog.txt"
+$debug = $true
+if ($debug) {
+	$logDirectory = "C:\NicksLog\AutoBackupProcedLog.txt"
+}
 
 ## Boolean globals to direct backup script
 $global:startTheBackup = $false
@@ -129,6 +132,9 @@ $BtnCC.Add_Click(
 	$main_form.Close()
 }
 )
+if ($debug) {
+	Start-Transcript -path $logDirectory -appen ##Adjust for usage machine
+}
 
 $main_form.ShowDialog()
 
@@ -145,11 +151,17 @@ if ($global:startTheBackup)
 	Write-Host "Performing the Dentrix Backup..."
 	Copy-Item "C:\Dentrix" -Destination $backupDir -Recurse -Force
 	Write-Host "Dentrix Backup Complete!"
+	
+	## Get time for logging
+	Get-Date -UFormat "%c"
 
 	## Perform Dexis Backup ##
 	Write-Host "Performing the Dexis Backup..."
 	Copy-Item "C:\Dexis" -Destination $backupDir -Recurse -Force
 	Write-Host "Dexis Backup Complete!"
+	
+	## Get time for logging
+	Get-Date -UFormat "%c"
 
 	if ($global:shutdownComp) #do we shut the computer down
 	{
