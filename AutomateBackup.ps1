@@ -7,6 +7,7 @@ $logDirectory = "C:\NicksLog\AutoBackupScriptVLog.txt"
 $global:startTheBackup = $false
 $global:shutdownComp = $false
 
+## Directions in GUI
 $txtText = "Step 1: Prepare Dentrix
 
 A. Run _ServerAdmin
