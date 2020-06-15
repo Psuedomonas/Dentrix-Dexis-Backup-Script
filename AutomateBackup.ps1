@@ -1,3 +1,6 @@
+<#Procedural Version 
+by Nicholas Zehm #>
+
 ## Directories to backup, set these variables
 $global:dentrix = "C:\Dentrix"
 $global:dexis = "C:\Dexis"
