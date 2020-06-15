@@ -8,7 +8,7 @@ The script is activated by the user clicking/launching the batch file
 
 This launches the powershell script without requiring changes to powershell script run permissions. The script provides the user with a windows form GUI for directing the backup location. The Dentrix and Dexis are backed up to the user selected directory.
 
-### Parallel Versus Procedural
+### Parallel versus Procedural
 There are two versions in this repository
 master = Procedural
   This conducts each backup 1 at a time. Advantage: Minimal fragmentation (if applicable). Cons: Slower (testing in progress).
