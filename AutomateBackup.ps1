@@ -1,5 +1,7 @@
+## Directories to backup, set these variables
 $dentrix = "Set this to the dentrix directory to backup"
 $dexis = "Set this to the dexis directory to backup"
+$logDirectory = "Set this to directory to store log file"
 
 ## Boolean globals to direct backup script
 $global:startTheBackup = $false
@@ -130,7 +132,7 @@ $BtnCC.Add_Click(
 	$main_form.Close()
 }
 )
-Start-Transcript -path C:\UserLog.txt -appen ##Adjust for usage machine
+Start-Transcript -path $logDirectory -appen ##Adjust for usage machine
 
 $main_form.ShowDialog()
 
