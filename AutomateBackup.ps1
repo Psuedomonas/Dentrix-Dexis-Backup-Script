@@ -1,5 +1,4 @@
-<#Procedural Version 
-by Nicholas Zehm #>
+<#Procedural Version 	by Nicholas Zehm #>
 
 ## Directories to backup, set these variables
 $global:dentrix = "C:\Dentrix"
