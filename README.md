@@ -23,7 +23,7 @@ Simply place both scripts in the same directory.
 
 ### HOW TO USE
 1. Edit the automateBackup.ps1 script to set the $dexis and $dentrix directories to the directories to backup. If using debug mode, set the log directory.
-*Note:
+***Note:
 The current edition works best using the backup directories of both programs. Both Dexis and Dentrix programs have their own backup tool. Run those first, then use this to automate the backup.  Attempting to backup both database directories directly fails to properly backup dexis. Presumbly dexis continues to maintain read/write control of its database file preventing this script from copying it. 
 
 2. The script is activated by the user clicking/launching the batch file
