@@ -1,3 +1,8 @@
+## Directories to backup, set these variables
+$dentrix = "C:\Dentrix"
+$dexis = "C:\Dexis"
+$logDirectory = "C:\NicksLog\AutoBackupScriptLog.txt"
+
 ## Boolean globals to direct backup script
 $global:startTheBackup = $false
 $global:shutdownComp = $false
@@ -69,14 +74,14 @@ $BtnYes.Add_Click(
 		$time = Get-Date -Format "MM.dd.yyyy"
 		$testDir = $FolderBrowserDialog.SelectedPath + '\' + $time
 		$alreadyThere = Test-Path $testDir -PathType Any
-		if (!$alreadyThere)
+		if (!$alreadyThere) # Check if file exists
 		{
 			$main_form.Close()
 			$global:startTheBackup = $true
 			$global:shutdownComp = $true
 			$global:x = $FolderBrowserDialog.SelectedPath
 		}
-		else
+		else	# File exists!
 		{
 			$Return=[System.Windows.Forms.MessageBox]::Show('Click OK to overwrite, or Cancel','Folder Already Exists!','okcancel')
 			if ($Return -eq 'OK')
@@ -127,6 +132,7 @@ $BtnCC.Add_Click(
 	$main_form.Close()
 }
 )
+Start-Transcript -path $logDirectory -appen ##Adjust for usage machine
 
 $main_form.ShowDialog()
 
@@ -141,17 +147,29 @@ if ($global:startTheBackup)
 		
 	## Perform Dentrix Backup ##
 	Write-Host "Performing the Dentrix Backup..."
-	Copy-Item "C:\Dentrix" -Destination $backupDir -Recurse -Force
+	Copy-Item $dentrix -Destination $backupDir -Recurse -Force
 	Write-Host "Dentrix Backup Complete!"
 
+	## Get time for logging
+	Get-Date -UFormat "%c"
+	
 	## Perform Dexis Backup ##
 	Write-Host "Performing the Dexis Backup..."
-	Copy-Item "C:\Dexis" -Destination $backupDir -Recurse -Force
+	## Need to escalated copy permissions
+	Copy-Item $dexis -Destination $backupDir -Recurse -Force
 	Write-Host "Dexis Backup Complete!"
+
+	## Get time for logging
+	Get-Date -UFormat "%c"
 
 	if ($global:shutdownComp) #do we shut the computer down
 	{
 		Write-Host "Shutting down computer..."
+		## Stop logging
+		Stop-Transcript
+		## Stop processes that prevent shutdown
+		#Stop-Process
+		#Stop-Process
 		## When backup is complete, shut down computer ##
 		Stop-Computer
 	}
