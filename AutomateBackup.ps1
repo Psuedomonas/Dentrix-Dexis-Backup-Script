@@ -1,7 +1,7 @@
 ## Directories to backup, set these variables
-$dentrix = "Set this to the dentrix directory to backup"
-$dexis = "Set this to the dexis directory to backup"
-$logDirectory = "Set this to directory to store log file"
+$dentrix = "C:\Dentrix"
+$dexis = "C:\Dexis"
+$logDirectory = "C:\NicksLog\AutoBackupScriptLog.txt"
 
 ## Boolean globals to direct backup script
 $global:startTheBackup = $false
@@ -150,11 +150,17 @@ if ($global:startTheBackup)
 	Copy-Item $dentrix -Destination $backupDir -Recurse -Force
 	Write-Host "Dentrix Backup Complete!"
 
+	## Get time for logging
+	Get-Date -UFormat "%c"
+	
 	## Perform Dexis Backup ##
 	Write-Host "Performing the Dexis Backup..."
 	## Need to escalated copy permissions
 	Copy-Item $dexis -Destination $backupDir -Recurse -Force
 	Write-Host "Dexis Backup Complete!"
+
+	## Get time for logging
+	Get-Date -UFormat "%c"
 
 	if ($global:shutdownComp) #do we shut the computer down
 	{
