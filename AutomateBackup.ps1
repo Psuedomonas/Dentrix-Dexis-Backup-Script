@@ -153,6 +153,10 @@ if ($global:startTheBackup)
 	## Get time for logging
 	Get-Date -UFormat "%c"
 	
+	Start-Job -ScriptBlock { dentrixbak.ps1 }
+	
+	
+	
 	## Perform Dexis Backup ##
 	Write-Host "Performing the Dexis Backup..."
 	## Need to escalated copy permissions
