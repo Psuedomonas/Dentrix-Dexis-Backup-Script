@@ -1,64 +1,53 @@
 ## Directories to backup, set these variables
-$dentrix = "C:\Dentrix"
-$dexis = "C:\Dexis"
-$logDirectory = "C:\NicksLog\AutoBackupScriptLog.txt"
+$global:dentrix = "C:\Dentrix"
+$global:dexis = "C:\Dexis"
+$logDirectory = "C:\NicksLog\AutoBackupScriptVLog.txt"
 
 ## Boolean globals to direct backup script
 $global:startTheBackup = $false
 $global:shutdownComp = $false
 
+## Directions in GUI
+$txtText = "Step 1: Prepare Dentrix
+A. Run _ServerAdmin
+B: Select Export Backup Tab
+C: Press Export Backup Button
+-----------------------------------------------------------------
+Step 2: Prepare Dexis
+A: Press Lock button on top right
+B: Run backup
+-----------------------------------------------------------------
+Step 3: Select whether to shut down computer after backup below
+Shutdown computer after backup?"
+
 ## Make GUI
 Add-Type -assembly System.Windows.Forms
 $main_form = New-Object System.Windows.Forms.Form
 $main_form.Text = 'Select Backup Directory'
-$main_form.Width = 600
-$main_form.Height = 400
+$main_form.Width = 400
+$main_form.Height = 350
 $main_form.AutoSize = $true
 
-$Lbl1 = New-Object System.Windows.Forms.Label
-$Lbl1.Text = "Step 1: Run _ServerAdmin"
-$Lbl1.Location  = New-Object System.Drawing.Point(0,10)
-$Lbl1.AutoSize = $true
-$main_form.Controls.Add($Lbl1)
-
-$Lbl2 = New-Object System.Windows.Forms.Label
-$Lbl2.Text = "Step 2: Select Export Backup Tab"
-$Lbl2.Location  = New-Object System.Drawing.Point(0,30)
-$Lbl2.AutoSize = $true
-$main_form.Controls.Add($Lbl2)
-
-$Lbl3 = New-Object System.Windows.Forms.Label
-$Lbl3.Text = "Step 3: Press Export Backup Button"
-$Lbl3.Location  = New-Object System.Drawing.Point(0,50)
-$Lbl3.AutoSize = $true
-$main_form.Controls.Add($Lbl3)
-
-$Lbl4 = New-Object System.Windows.Forms.Label
-$Lbl4.Text = "Step 4. Select whether to shut down computer below"
-$Lbl4.Location  = New-Object System.Drawing.Point(0,70)
-$Lbl4.AutoSize = $true
-$main_form.Controls.Add($Lbl4)
-
-$Lbl5 = New-Object System.Windows.Forms.Label
-$Lbl5.Text = "Shutdown computer after backup?"
-$Lbl5.Location  = New-Object System.Drawing.Point(0,100)
-$Lbl5.AutoSize = $true
-$main_form.Controls.Add($Lbl5)
+$txtBox1 = New-Object System.Windows.Forms.Label
+$txtBox1.Text = $txtText
+$txtBox1.Location  = New-Object System.Drawing.Point(0,10)
+$txtBox1.AutoSize = $true
+$main_form.Controls.Add($txtBox1)
 
 $BtnYes = New-Object System.Windows.Forms.Button
-$BtnYes.Location = New-Object System.Drawing.Size(10,120)
+$BtnYes.Location = New-Object System.Drawing.Size(10,250)
 $BtnYes.Size = New-Object System.Drawing.Size(40,30)
 $BtnYes.Text = "Yes"
 $main_form.Controls.Add($BtnYes)
 
 $BtnNo = New-Object System.Windows.Forms.Button
-$BtnNo.Location = New-Object System.Drawing.Size(60,120)
+$BtnNo.Location = New-Object System.Drawing.Size(60,250)
 $BtnNo.Size = New-Object System.Drawing.Size(40,30)
 $BtnNo.Text = "No"
 $main_form.Controls.Add($BtnNo)
 
 $BtnCC = New-Object System.Windows.Forms.Button
-$BtnCC.Location = New-Object System.Drawing.Size(110,120)
+$BtnCC.Location = New-Object System.Drawing.Size(110,250)
 $BtnCC.Size = New-Object System.Drawing.Size(60,30)
 $BtnCC.Text = "Cancel"
 $main_form.Controls.Add($BtnCC)
