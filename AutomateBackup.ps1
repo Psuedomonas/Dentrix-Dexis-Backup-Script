@@ -1,3 +1,6 @@
+$dentrix = "Set this to the dentrix directory to backup"
+$dexis = "Set this to the dexis directory to backup"
+
 ## Boolean globals to direct backup script
 $global:startTheBackup = $false
 $global:shutdownComp = $false
@@ -142,13 +145,13 @@ if ($global:startTheBackup)
 		
 	## Perform Dentrix Backup ##
 	Write-Host "Performing the Dentrix Backup..."
-	Copy-Item "C:\Dentrix" -Destination $backupDir -Recurse -Force
+	Copy-Item $dentrix -Destination $backupDir -Recurse -Force
 	Write-Host "Dentrix Backup Complete!"
 
 	## Perform Dexis Backup ##
 	Write-Host "Performing the Dexis Backup..."
 	## Need to escalated copy permissions
-	Copy-Item "C:\Dexis" -Destination $backupDir -Recurse -Force
+	Copy-Item $dexis -Destination $backupDir -Recurse -Force
 	Write-Host "Dexis Backup Complete!"
 
 	if ($global:shutdownComp) #do we shut the computer down
