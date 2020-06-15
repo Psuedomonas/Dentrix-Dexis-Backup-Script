@@ -132,6 +132,9 @@ $BtnCC.Add_Click(
 	$main_form.Close()
 }
 )
+if ($debug) {
+	Start-Transcript -path $logDirectory -appen ##Adjust for usage machine
+}
 
 $main_form.ShowDialog()
 
