@@ -1,7 +1,7 @@
 ## Directories to backup, set these variables
-$dentrix = "C:\Dentrix"
-$dexis = "C:\Dexis"
-$logDirectory = "C:\NicksLog\AutoBackupScriptLog.txt"
+$global:dentrix = "C:\Dentrix"
+$global:dexis = "C:\Dexis"
+$logDirectory = "C:\NicksLog\AutoBackupScriptVLog.txt"
 
 ## Boolean globals to direct backup script
 $global:startTheBackup = $false
@@ -143,25 +143,29 @@ if ($global:startTheBackup)
 	$time = Get-Date -Format "MM.dd.yyyy"
 	Write-Host "Peforming backup at: " $global:x
 	New-Item -Path $global:x -Name $time -ItemType "directory" -Force
-	$backupDir = $global:x + '/' + $time
-		
-	## Perform Dentrix Backup ##
-	Write-Host "Performing the Dentrix Backup..."
-	Copy-Item $dentrix -Destination $backupDir -Recurse -Force
-	Write-Host "Dentrix Backup Complete!"
+	$global:backupDir = $global:x + '/' + $time
 
 	## Get time for logging
 	Get-Date -UFormat "%c"
-	
-	Start-Job -ScriptBlock { dentrixbak.ps1 }
-	
-	
-	
-	## Perform Dexis Backup ##
-	Write-Host "Performing the Dexis Backup..."
-	## Need to escalated copy permissions
-	Copy-Item $dexis -Destination $backupDir -Recurse -Force
-	Write-Host "Dexis Backup Complete!"
+
+    Start-Job -ScriptBlock {
+       	## Perform Dentrix Backup ##
+	    Write-Host "Performing the Dentrix Backup..."
+	    Copy-Item $global:dentrix -Destination $global:backupDir -Recurse -Force
+	    Write-Host "Dentrix Backup Complete!"
+    }
+
+	Start-Job -ScriptBlock {
+	    ## Perform Dexis Backup ##
+	    Write-Host "Performing the Dexis Backup..."
+	    Copy-Item $global:dexis -Destination $global:backupDir -Recurse -Force
+	    Write-Host "Dexis Backup Complete!"
+    }
+    ## Get Dentrix Backup job info
+    Receive-Job -Id 1
+
+    ## Get Dexis Backup job info
+    Receive-Job -Id 2
 
 	## Get time for logging
 	Get-Date -UFormat "%c"
