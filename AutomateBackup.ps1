@@ -1,7 +1,10 @@
 ## Directories to backup, set these variables
 $global:dentrix = "C:\Dentrix"
 $global:dexis = "C:\Dexis"
-$logDirectory = "C:\NicksLog\AutoBackupProcedLog.txt"
+$debug = $true
+if ($debug) {
+	$logDirectory = "C:\NicksLog\AutoBackupProcedLog.txt"
+}
 
 ## Boolean globals to direct backup script
 $global:startTheBackup = $false
