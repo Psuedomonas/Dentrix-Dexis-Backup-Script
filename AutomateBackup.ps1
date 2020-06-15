@@ -1,7 +1,10 @@
 ## Directories to backup, set these variables
 $global:dentrix = "C:\Dentrix"
 $global:dexis = "C:\Dexis"
-$logDirectory = "C:\NicksLog\AutoBackupParaLog.txt"
+$debug = $true
+if ($debug) {
+	$logDirectory = "C:\NicksLog\AutoBackupParaLog.txt"
+}
 
 ## Boolean globals to direct backup script
 $global:startTheBackup = $false
@@ -121,7 +124,10 @@ $BtnCC.Add_Click(
 	$main_form.Close()
 }
 )
-Start-Transcript -path $logDirectory -appen ##Adjust for usage machine
+
+if ($debug) {
+	Start-Transcript -path $logDirectory -appen ##Adjust for usage machine
+}
 
 $main_form.ShowDialog()
 
