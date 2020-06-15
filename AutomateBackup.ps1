@@ -151,11 +151,17 @@ if ($global:startTheBackup)
 	Write-Host "Performing the Dentrix Backup..."
 	Copy-Item "C:\Dentrix" -Destination $backupDir -Recurse -Force
 	Write-Host "Dentrix Backup Complete!"
+	
+	## Get time for logging
+	Get-Date -UFormat "%c"
 
 	## Perform Dexis Backup ##
 	Write-Host "Performing the Dexis Backup..."
 	Copy-Item "C:\Dexis" -Destination $backupDir -Recurse -Force
 	Write-Host "Dexis Backup Complete!"
+	
+	## Get time for logging
+	Get-Date -UFormat "%c"
 
 	if ($global:shutdownComp) #do we shut the computer down
 	{
