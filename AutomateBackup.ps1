@@ -157,12 +157,23 @@ if ($global:startTheBackup)
 	    Copy-Item $global:dexis -Destination $global:backupDir -Recurse -Force
 	    Write-Host "Dexis Backup Complete!"
     }
-    ## Get Dentrix Backup job info
-    Receive-Job -Id 1
-
+    ## Get Dentrix Backup job info - Do I need these 2 lines here?
+    Get-Job -Id 1
+	
     ## Get Dexis Backup job info
-    Receive-Job -Id 2
-
+    Get-Job -Id 2
+	While (Get-Job -id 1 -State "Running" -or Get-Job -id 1 -State "Running")
+	{
+		Start-Sleep 10
+	}
+	##send output to console
+	Recieve-Job -Id 1
+	Recieve-Job -Id 2
+	
+	## Close jobs
+	Remove-Job -Id 1
+	Remove-Job -Id 2
+	
 	## Get time for logging
 	Get-Date -UFormat "%c"
 
