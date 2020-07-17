@@ -39,9 +39,9 @@ The current edition works best using the backup directories of both programs. Bo
 6. The bat console with update with the status of the script. Note any errors, when completed hit enter as prompted, or close the console.
 
 ### Development
-There is now a parallel backup version and a procedural backup verion. Both have logging on for now to examine time efficency of parallel.
+There is now a parallel backup version and a procedural backup verion. Both have logging on for now to examine time efficency of parallel. Parallel is 'unstable' at least until I get around to testing it.
 
 ### Future Updates
-* Cannot copy an essential file from the dexis directory. This is either becuase the file is locked as it is in use, or mirely a user escalation is required. This issue need to to be fixed.
-* Some processes may still prevent windows from properly shutting down. These processes need to be noted so they can be scripted to shut down.
+* Cannot copy an essential file from the dexis directory. This is either becuase the file is locked as it is in use, or mirely a user escalation is required. This issue will need to to be fixed for a particular use case. Not applicable if backup is made soley from Dexis backup export (Which I will now recommend for users, involves extra steps but may be faster)
 * Clean up labels in gui for clear instructions.
+* Update code with changes generated in client version of code.
