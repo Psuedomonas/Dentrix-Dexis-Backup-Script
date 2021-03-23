@@ -31,7 +31,7 @@ The current edition works best using the backup directories of both programs. Bo
 
 3. The GUI will launch with recommended steps for preparing the backup. I recommend following those as mentioned in the note above. 
 
-4. Select whether to shutdown the computer (or cancel to close script)
+4. Select whether to shutdown the computer after backup (or cancel to close script)
 
 5. Select backup directory
   The program will prompt if a backup exists in the directory with the same date stamp (see script for details)
