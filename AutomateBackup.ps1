@@ -1,6 +1,6 @@
 <#Procedural Version 	by Nicholas Zehm #>
 ## Directories to backup, set these variables
-$global:dentrix = "C:\Dentrix"
+$global:dentrix = "C:\Dentrix\Common"
 $global:dexis = "C:\Dexis"
 $debug = $true
 if ($debug) {
