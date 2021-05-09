@@ -2,7 +2,7 @@
 Automate and configure file backups with powershell
 
 ***
-5/9/21 NOTE: This version doesn't work well with dexis backup. Because dexis backup is fairly fast, I may forgo automating the dexis backup and only do dentrix. Because this software is geared for the software at my workplace, the new version will also include directions for the new backup protocol.
+5/9/21 NOTE: This version doesn't work well with dexis backup. Because dexis backup is fairly fast, I may forgo automating the dexis backup and only do dentrix. Because this software is geared for the software at my workplace, the new version will also include directions for the new backup protocol. While I would like to make progress on parallel backups and processing, this will be obsolete in the forthcoming version.
 ***
 
 Backup-Powershell is a batch script and a powershell script that automates backups of Dentrix and Dexis software, then shuts down the computer. It provides the opportunity to overwrite preexisting backups if they exist, and the option to not shutdown the computer
