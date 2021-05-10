@@ -64,8 +64,10 @@ Write-Host ""
 Write-Host "A. Launch Dexis"
 Write-Host "B. Click lock button"
 Write-Host "C. Select 'Settings' Tab"
+
 $condensed = "D. Set the directory to " + $global:x + "\" + $time
 Write-Host $condensed
+
 Write-Host "E. Select 'Perform backup tab"
 Write-Host "F. Press button to begin backup"
 Write-Host ""
@@ -122,7 +124,7 @@ if ($global:startTheBackup)
 		
 	## Perform Dentrix Backup ##
 	Write-Host "Performing the Dentrix Backup..."
-	Copy-Item "C:\Dentrix" -Destination $backupDir -Recurse -Force
+	Copy-Item $global:dentrix -Destination $backupDir -Recurse -Force
 	Write-Host "Dentrix Backup Complete!"
 	
 	## Get time for logging
