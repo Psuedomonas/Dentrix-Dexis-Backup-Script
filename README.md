@@ -1,7 +1,7 @@
 # Backup-Powershell
 Automate Dentrix backup with powershell
 
-Version 1.1
+Version 2
 
 Nicholas Zehm
 
