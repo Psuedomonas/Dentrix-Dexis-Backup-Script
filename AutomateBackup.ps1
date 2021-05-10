@@ -7,9 +7,9 @@ This version abandons the windows form interface an simply uses a console
 $global:dentrix = "C:\Dentrix" #Adjust to Dentrix save directory
 
 #debug mode - Turns on a log, usefull for checking for backup errors, but is set to append so it will grow overlarge eventually.
-$debug = $true
+$debug = 2 # 0 = no log, debug off. 1 = Full log, debug on. 2 = Logs only the backup
 
-if ($debug) {
+if ($debug -ne 0) {
 	$logDirectory = "C:\NicksLog\AutoBackupLog.txt"
 }
 
@@ -22,7 +22,7 @@ Write-Host "Step 1: Choose backup directory"
 #Add GUI stuff
 Add-Type -assembly System.Windows.Forms
 $FolderBrowserDialog = New-Object System.Windows.Forms.FolderBrowserDialog
-if ($debug) {
+if ($debug -eq 1) {
 	Start-Transcript -path $logDirectory -appen #I can set this to later in the code... at a later time
 }
 Write-Host "Choose the location to put backup"
@@ -110,6 +110,8 @@ elseif ($UserInput -eq 'c')
 
 if ($global:startTheBackup)
 {
+	if ($debug -eq 2) {
+		Start-Transcript -path $logDirectory -appen
 	## Peforms backup directory - Overwrite files applicable to gui selection##
 	$time = Get-Date -Format "MM.dd.yyyy"
 	Write-Host "Peforming backup at: " $global:x
