@@ -62,7 +62,8 @@ Write-Host ""
 Write-Host "A. Launch Dexis"
 Write-Host "B. Click lock button"
 Write-Host "C. Select 'Settings' Tab"
-Write-Host "D. Set the directory to" $global:x
+$condensed = "D. Set the directory to " + $global:x + "\" + $time
+Write-Host $condensed
 Write-Host "E. Select 'Perform backup tab"
 Write-Host "F. Press button to begin backup"
 Write-Host ""
