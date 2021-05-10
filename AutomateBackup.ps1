@@ -1,5 +1,5 @@
 <#
-Dentrix (and vicariously Dexis) Autobackup Version 1.1
+Dentrix (and vicariously Dexis) Autobackup Version 2
 by Nicholas Zehm
 This version abandons the windows forms interface and simply uses a console
 #>
