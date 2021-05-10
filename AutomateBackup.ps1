@@ -18,28 +18,7 @@ $global:shutdownComp = $false
 $global:startTheBackup = $false
 
 Write-Host "Step 1: Choose backup directory"
-<#
-$UserInput = Read-Host "Do you want to generate a new backup folder (y/n/help)?"
-if ($UserInput -eq 'y')
-{
-    $makeNewFolder = $true
-} 
-elseif ($UserInput -eq 'help') 
-{
-    Write-Host ""
-    Write-Host "Usually we will use this script to make a new backup folder from today's date." 
-    Write-Host "However, you could make a directory externally and select it when you choose a directory."
-    Write-Host "To do this press the 'n' key and then press the 'Enter' key"
-    Write-Host "Otherwise, press the 'y' key and we will make a folder using today's date in the directory we will be asking for next."
-    Write-Host ""
-    $UserInput = Read-Host "Do you want to generate a new backup folder (y/n)"
 
-    if ($UserInput -eq 'y') 
-    {
-    $makeNewFolder = $true
-    }
-}
-#>
 #Add GUI stuff
 Add-Type -assembly System.Windows.Forms
 $FolderBrowserDialog = New-Object System.Windows.Forms.FolderBrowserDialog
@@ -83,7 +62,8 @@ Write-Host ""
 Write-Host "A. Launch Dexis"
 Write-Host "B. Click lock button"
 Write-Host "C. Select 'Settings' Tab"
-Write-Host "D. Set the directory to" $global:x
+$condensed = "D. Set the directory to " + $global:x + "\" + $time
+Write-Host $condensed
 Write-Host "E. Select 'Perform backup tab"
 Write-Host "F. Press button to begin backup"
 Write-Host ""
