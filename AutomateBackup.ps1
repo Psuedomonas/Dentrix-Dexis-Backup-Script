@@ -17,14 +17,16 @@ if ($debug -ne 0) {
 $global:shutdownComp = $false
 $global:startTheBackup = $false
 
-Write-Host "Step 1: Choose backup directory"
-
 #Add GUI stuff
 Add-Type -assembly System.Windows.Forms
 $FolderBrowserDialog = New-Object System.Windows.Forms.FolderBrowserDialog
+
 if ($debug -eq 1) {
 	Start-Transcript -path $logDirectory -appen #I can set this to later in the code... at a later time
 }
+
+Write-Host "Step 1: Choose backup directory"
+
 Write-Host "Choose the location to put backup"
 Write-Host ""
 Write-Host "(Note, a browser menu has appeared. It may be hidden so check your task bar if you don't see it...)"
