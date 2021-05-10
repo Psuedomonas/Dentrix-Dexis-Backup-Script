@@ -7,7 +7,7 @@ This version abandons the windows forms interface and simply uses a console
 $global:dentrix = "C:\Dentrix\Common" #Adjust to Dentrix save directory
 
 #debug mode - Turns on a log, useful for checking for backup errors, but is set to append so it will grow overlarge eventually.
-$debug = 2 # 0 = no log, debug off. 1 = Full log, debug on. 2 = Logs only the backup
+$debug = 2 # 0 = no log, debug off. 1 = Full log, debug on. 2 = Logs only the backup.
 
 if ($debug -ne 0) {
 	$logDirectory = "C:\NicksLog\AutoBackupLog.txt"
