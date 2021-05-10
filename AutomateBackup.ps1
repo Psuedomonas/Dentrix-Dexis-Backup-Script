@@ -22,7 +22,7 @@ Add-Type -assembly System.Windows.Forms
 $FolderBrowserDialog = New-Object System.Windows.Forms.FolderBrowserDialog
 
 if ($debug -eq 1) {
-	Start-Transcript -path $logDirectory -appen #I can set this to later in the code... at a later time
+	Start-Transcript -path $logDirectory -appen
 }
 
 Write-Host "Step 1: Choose backup directory"
