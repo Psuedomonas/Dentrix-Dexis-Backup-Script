@@ -1,4 +1,8 @@
-<#Dentrix (and vicariously Dexis) Autobackup Version 1.1#>
+<#
+Dentrix (and vicariously Dexis) Autobackup Version 1.1
+by Nicholas Zehm
+This version abandons the windows form interface an simply uses a console
+#>
 
 $global:dentrix = "C:\Dentrix" #Adjust to Dentrix save directory
 
