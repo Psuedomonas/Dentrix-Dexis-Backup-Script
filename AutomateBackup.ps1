@@ -1,145 +1,129 @@
-<#Procedural Version 	by Nicholas Zehm #>
-## Directories to backup, set these variables
-$global:dentrix = "C:\Dentrix\Common"
-$global:dexis = "C:\Dexis"
+<#Dentrix (and vicariously Dexis) Autobackup Version 1.1#>
+
+$global:dentrix = "C:\Dentrix" #Adjust to Dentrix save directory
+
+#debug mode - Turns on a log, usefull for checking for backup errors, but is set to append so it will grow overlarge eventually.
 $debug = $true
+
 if ($debug) {
-	$logDirectory = "C:\NicksLog\AutoBackupProcedLog.txt"
+	$logDirectory = "C:\NicksLog\AutoBackupLog.txt"
 }
 
 ## Boolean globals to direct backup script
-$global:startTheBackup = $false
 $global:shutdownComp = $false
+$global:startTheBackup = $false
 
-## Directions in GUI
-$txtText = "Step 1: Prepare Dentrix
+Write-Host "Step 1: Choose backup directory"
+<#
+$UserInput = Read-Host "Do you want to generate a new backup folder (y/n/help)?"
+if ($UserInput -eq 'y')
+{
+    $makeNewFolder = $true
+} 
+elseif ($UserInput -eq 'help') 
+{
+    Write-Host ""
+    Write-Host "Usually we will use this script to make a new backup folder from today's date." 
+    Write-Host "However, you could make a directory externally and select it when you choose a directory."
+    Write-Host "To do this press the 'n' key and then press the 'Enter' key"
+    Write-Host "Otherwise, press the 'y' key and we will make a folder using today's date in the directory we will be asking for next."
+    Write-Host ""
+    $UserInput = Read-Host "Do you want to generate a new backup folder (y/n)"
 
-A. Run _ServerAdmin
-
-B: Select Export Backup Tab
-
-C: Press Export Backup Button
------------------------------------------------------------------
-Step 2: Prepare Dexis
-
-A: Press Lock button on top right
-
-B: Run backup
------------------------------------------------------------------
-Step 3: Select whether to shut down computer after backup below
-
-
-Shutdown computer after backup?"
-
-## Make GUI
+    if ($UserInput -eq 'y') 
+    {
+    $makeNewFolder = $true
+    }
+}
+#>
+#Add GUI stuff
 Add-Type -assembly System.Windows.Forms
-$main_form = New-Object System.Windows.Forms.Form
-$main_form.Text = 'Select Backup Directory'
-$main_form.Width = 400
-$main_form.Height = 350
-$main_form.AutoSize = $true
-
-$txtBox1 = New-Object System.Windows.Forms.Label
-$txtBox1.Text = $txtText
-$txtBox1.Location  = New-Object System.Drawing.Point(0,10)
-$txtBox1.AutoSize = $true
-$main_form.Controls.Add($txtBox1)
-
-$BtnYes = New-Object System.Windows.Forms.Button
-$BtnYes.Location = New-Object System.Drawing.Size(10,250)
-$BtnYes.Size = New-Object System.Drawing.Size(40,30)
-$BtnYes.Text = "Yes"
-$main_form.Controls.Add($BtnYes)
-
-$BtnNo = New-Object System.Windows.Forms.Button
-$BtnNo.Location = New-Object System.Drawing.Size(60,250)
-$BtnNo.Size = New-Object System.Drawing.Size(40,30)
-$BtnNo.Text = "No"
-$main_form.Controls.Add($BtnNo)
-
-$BtnCC = New-Object System.Windows.Forms.Button
-$BtnCC.Location = New-Object System.Drawing.Size(110,250)
-$BtnCC.Size = New-Object System.Drawing.Size(60,30)
-$BtnCC.Text = "Cancel"
-$main_form.Controls.Add($BtnCC)
-
-
 $FolderBrowserDialog = New-Object System.Windows.Forms.FolderBrowserDialog
-
-
-$BtnYes.Add_Click(
-{
-	[void] $FolderBrowserDialog.ShowDialog()
-	if (!$FolderBrowserDialog.SelectedPath -eq "") 
-	{
-		$time = Get-Date -Format "MM.dd.yyyy"
-		$testDir = $FolderBrowserDialog.SelectedPath + '\' + $time
-		$alreadyThere = Test-Path $testDir -PathType Any
-		if (!$alreadyThere)
-		{
-			$main_form.Close()
-			$global:startTheBackup = $true
-			$global:shutdownComp = $true
-			$global:x = $FolderBrowserDialog.SelectedPath
-		}
-		else
-		{
-			$Return=[System.Windows.Forms.MessageBox]::Show('Click OK to overwrite, or Cancel','Folder Already Exists!','okcancel')
-			if ($Return -eq 'OK')
-			{
-				$global:overwriteFolder = $true
-				$main_form.Close()
-				$global:startTheBackup = $true
-				$global:shutdownComp = $true
-				$global:x = $FolderBrowserDialog.SelectedPath
-			}
-		}
-	}
-}
-)
-
-$BtnNo.Add_Click(
-{
-	[void] $FolderBrowserDialog.ShowDialog()
-	if (!$FolderBrowserDialog.SelectedPath -eq "") 
-	{
-		$time = Get-Date -Format "MM.dd.yyyy"
-		$testDir = $FolderBrowserDialog.SelectedPath + '\' + $time
-		$alreadyThere = Test-Path $testDir -PathType Any
-		if (!$alreadyThere)
-		{
-			$main_form.Close()
-			$global:startTheBackup = $true
-			$global:shutdownComp = $false
-			$global:x = $FolderBrowserDialog.SelectedPath
-		}
-		else
-		{
-			$Return=[System.Windows.Forms.MessageBox]::Show('Click OK to overwrite, or Cancel','Folder Already Exists!','okcancel')
-			if ($Return -eq 'OK')
-			{
-				$global:overwriteFolder = $true
-				$main_form.Close()
-				$global:startTheBackup = $true
-				$global:shutdownComp = $false
-				$global:x = $FolderBrowserDialog.SelectedPath
-			}
-		}
-	}
-}
-)
-$BtnCC.Add_Click(
-{
-	$main_form.Close()
-}
-)
 if ($debug) {
-	Start-Transcript -path $logDirectory -appen ##Adjust for usage machine
+	Start-Transcript -path $logDirectory -appen #I can set this to later in the code... at a later time
+}
+Write-Host "Choose the location to put backup"
+Write-Host ""
+Write-Host "(Note, a browser menu has appeared. It may be hidden so check your task bar if you don't see it...)"
+
+[void] $FolderBrowserDialog.ShowDialog()
+
+$time = Get-Date -Format "MM.dd.yyyy"
+$testDir = $FolderBrowserDialog.SelectedPath + '\' + $time
+$alreadyThere = Test-Path $testDir -PathType Any
+       
+if (!$alreadyThere)
+{
+	$global:x = $FolderBrowserDialog.SelectedPath
+    $global:startTheBackup = $true
+}
+else
+{
+    Write-Host ""
+    $UserInput = Read-Host "FILE ALREADY EXISTS! Over-write file? (y/n)?"
+    if ($UserInput -eq 'y')
+    {
+        $global:x = $FolderBrowserDialog.SelectedPath
+        $global:startTheBackup = $true
+    }
 }
 
-$main_form.ShowDialog()
+if (!$global:startTheBackup)
+{
+    Write-Host "An error occured, try running the script again"
+    Return
+}
+Write-Host ""
+Write-Host "Step 2: Backup Dexis"
+Write-Host ""
+Write-Host "A. Launch Dexis"
+Write-Host "B. Click lock button"
+Write-Host "C. Select 'Settings' Tab"
+Write-Host "D. Set the directory to" $global:x
+Write-Host "E. Select 'Perform backup tab"
+Write-Host "F. Press button to begin backup"
+Write-Host ""
 
-## Backup Operations - Boolean to prevent backup without GUI instructions
+$UserInput = Read-Host "Once the Dexis backup has has started, type 'proceed' and hit enter"
+if ($UserInput -ne 'proceed')
+{
+    Do
+    {
+        $UserInput = Read-Host "Once the Dexis backup has has started, type 'proceed' and hit enter"
+    }
+    While ($UserInput -ne "proceed")
+}
+
+Write-Host "While the backup is occuring, we can begin the Dentrix backup"
+
+Write-Host ""
+Write-Host "Step 3: Initialize backup of Dentrix"
+Write-Host ""
+Write-Host "A. Run _ServerAdmin"
+Write-Host "B. Select Export Backup Tab"
+Write-Host "C: Press Export Backup Button"
+Write-Host ""
+
+$UserInput = Read-Host "Once the Dentrix _ServerAdmin backup has completed, type 'proceed' and hit enter"
+if ($UserInput -ne 'proceed')
+{
+    Do
+    {
+        $UserInput = Read-Host "Once the Dentrix _ServerAdmin backup has completed, type 'proceed' and hit enter"
+    }
+    While ($UserInput -ne "proceed")
+}
+
+$UserInput = Read-Host "Now the final backup step (4). Do you want the computer to shutdown after it completes (y/n or c to cancel)?"
+if ($UserInput -eq 'y')
+{
+    $global:shutdownComp = $true
+}
+elseif ($UserInput -eq 'c')
+{
+    Return
+}
+
 if ($global:startTheBackup)
 {
 	## Peforms backup directory - Overwrite files applicable to gui selection##
@@ -156,14 +140,6 @@ if ($global:startTheBackup)
 	## Get time for logging
 	Get-Date -UFormat "%c"
 
-	## Perform Dexis Backup ##
-	Write-Host "Performing the Dexis Backup..."
-	Copy-Item "C:\Dexis" -Destination $backupDir -Recurse -Force
-	Write-Host "Dexis Backup Complete!"
-	
-	## Get time for logging
-	Get-Date -UFormat "%c"
-
 	if ($global:shutdownComp) #do we shut the computer down
 	{
 		Write-Host "Shutting down computer..."
@@ -171,3 +147,4 @@ if ($global:startTheBackup)
 		Stop-Computer
 	}
 }
+Write-Host "Script Completed!!!"
