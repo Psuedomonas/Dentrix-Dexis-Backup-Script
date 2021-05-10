@@ -1,15 +1,15 @@
 <#
 Dentrix (and vicariously Dexis) Autobackup Version 1.1
 by Nicholas Zehm
-This version abandons the windows form interface an simply uses a console
+This version abandons the windows forms interface and simply uses a console
 #>
 
-$global:dentrix = "C:\Dentrix" #Adjust to Dentrix save directory
+$global:dentrix = "C:\Dentrix\Common" #Adjust to Dentrix save directory
 
-#debug mode - Turns on a log, usefull for checking for backup errors, but is set to append so it will grow overlarge eventually.
-$debug = $true
+#debug mode - Turns on a log, useful for checking for backup errors, but is set to append so it will grow overlarge eventually.
+$debug = 2 # 0 = no log, debug off. 1 = Full log, debug on. 2 = Logs only the backup.
 
-if ($debug) {
+if ($debug -ne 0) {
 	$logDirectory = "C:\NicksLog\AutoBackupLog.txt"
 }
 
@@ -17,14 +17,16 @@ if ($debug) {
 $global:shutdownComp = $false
 $global:startTheBackup = $false
 
-Write-Host "Step 1: Choose backup directory"
-
 #Add GUI stuff
 Add-Type -assembly System.Windows.Forms
 $FolderBrowserDialog = New-Object System.Windows.Forms.FolderBrowserDialog
-if ($debug) {
-	Start-Transcript -path $logDirectory -appen #I can set this to later in the code... at a later time
+
+if ($debug -eq 1) {
+	Start-Transcript -path $logDirectory -appen
 }
+
+Write-Host "Step 1: Choose backup directory"
+
 Write-Host "Choose the location to put backup"
 Write-Host ""
 Write-Host "(Note, a browser menu has appeared. It may be hidden so check your task bar if you don't see it...)"
@@ -35,24 +37,20 @@ $time = Get-Date -Format "MM.dd.yyyy"
 $testDir = $FolderBrowserDialog.SelectedPath + '\' + $time
 $alreadyThere = Test-Path $testDir -PathType Any
        
-if (!$alreadyThere)
-{
+if (!$alreadyThere) {
 	$global:x = $FolderBrowserDialog.SelectedPath
     $global:startTheBackup = $true
 }
-else
-{
+else {
     Write-Host ""
     $UserInput = Read-Host "FILE ALREADY EXISTS! Over-write file? (y/n)?"
-    if ($UserInput -eq 'y')
-    {
+    if ($UserInput -eq 'y') {
         $global:x = $FolderBrowserDialog.SelectedPath
         $global:startTheBackup = $true
     }
 }
 
-if (!$global:startTheBackup)
-{
+if (!$global:startTheBackup) {
     Write-Host "An error occured, try running the script again"
     Return
 }
@@ -62,17 +60,17 @@ Write-Host ""
 Write-Host "A. Launch Dexis"
 Write-Host "B. Click lock button"
 Write-Host "C. Select 'Settings' Tab"
+
 $condensed = "D. Set the directory to " + $global:x + "\" + $time
 Write-Host $condensed
+
 Write-Host "E. Select 'Perform backup tab"
 Write-Host "F. Press button to begin backup"
 Write-Host ""
 
 $UserInput = Read-Host "Once the Dexis backup has has started, type 'proceed' and hit enter"
-if ($UserInput -ne 'proceed')
-{
-    Do
-    {
+if ($UserInput -ne 'proceed') {
+    Do {
         $UserInput = Read-Host "Once the Dexis backup has has started, type 'proceed' and hit enter"
     }
     While ($UserInput -ne "proceed")
@@ -89,46 +87,43 @@ Write-Host "C: Press Export Backup Button"
 Write-Host ""
 
 $UserInput = Read-Host "Once the Dentrix _ServerAdmin backup has completed, type 'proceed' and hit enter"
-if ($UserInput -ne 'proceed')
-{
-    Do
-    {
+if ($UserInput -ne 'proceed') {
+    Do {
         $UserInput = Read-Host "Once the Dentrix _ServerAdmin backup has completed, type 'proceed' and hit enter"
     }
     While ($UserInput -ne "proceed")
 }
 
 $UserInput = Read-Host "Now the final backup step (4). Do you want the computer to shutdown after it completes (y/n or c to cancel)?"
-if ($UserInput -eq 'y')
-{
+if ($UserInput -eq 'y') {
     $global:shutdownComp = $true
 }
-elseif ($UserInput -eq 'c')
-{
+elseif ($UserInput -eq 'c') {
     Return
 }
 
-if ($global:startTheBackup)
-{
-	## Peforms backup directory - Overwrite files applicable to gui selection##
+if ($global:startTheBackup) {
+	if ($debug -eq 2) {
+		Start-Transcript -path $logDirectory -appen
+    }
+	## Peforms backup directory - Overwrite files applicable to ui selection##
 	$time = Get-Date -Format "MM.dd.yyyy"
-	Write-Host "Peforming backup at: " $global:x
+    $backupDir = $global:x + '/' + $time
+	Write-Host "Peforming backup at: " $backupDir
 	New-Item -Path $global:x -Name $time -ItemType "directory" -Force
-	$backupDir = $global:x + '/' + $time
 		
 	## Perform Dentrix Backup ##
 	Write-Host "Performing the Dentrix Backup..."
-	Copy-Item "C:\Dentrix" -Destination $backupDir -Recurse -Force
+	Copy-Item $global:dentrix -Destination $backupDir -Recurse -Force
 	Write-Host "Dentrix Backup Complete!"
 	
 	## Get time for logging
 	Get-Date -UFormat "%c"
 
-	if ($global:shutdownComp) #do we shut the computer down
-	{
+	if ($global:shutdownComp) { #do we shut the computer down?
 		Write-Host "Shutting down computer..."
-		## When backup is complete, shut down computer ##
-		Stop-Computer
+
+		Stop-Computer # when backup is complete, shut down computer
 	}
 }
 Write-Host "Script Completed!!!"
