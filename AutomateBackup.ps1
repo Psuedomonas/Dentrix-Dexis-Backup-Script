@@ -1,15 +1,15 @@
 <#
-Dentrix (and vicariously Dexis) Autobackup Version 2
+Dentrix (and vicariously Dexis) Autobackup Version 1.1
 by Nicholas Zehm
-This version abandons the windows forms interface and simply uses a console
+This version abandons the windows form interface an simply uses a console
 #>
 
 $global:dentrix = "C:\Dentrix\Common" #Adjust to Dentrix save directory
 
 #debug mode - Turns on a log, useful for checking for backup errors, but is set to append so it will grow overlarge eventually.
-$debug = 2 # 0 = no log, debug off. 1 = Full log, debug on. 2 = Logs only the backup.
+$debug = $true
 
-if ($debug -ne 0) {
+if ($debug) {
 	$logDirectory = "C:\NicksLog\AutoBackupLog.txt"
 }
 
@@ -22,7 +22,7 @@ Add-Type -assembly System.Windows.Forms
 $FolderBrowserDialog = New-Object System.Windows.Forms.FolderBrowserDialog
 
 if ($debug -eq 1) {
-	Start-Transcript -path $logDirectory -appen
+	Start-Transcript -path $logDirectory -appen #I can set this to later in the code... at a later time
 }
 
 Write-Host "Step 1: Choose backup directory"
@@ -50,10 +50,15 @@ else {
     }
 }
 
+$backupDir = $global:x + '\' + $time
+
 if (!$global:startTheBackup) {
     Write-Host "An error occured, try running the script again"
     Return
 }
+$backupDir = $global:x + '/' + $time
+New-Item -Path $global:x -Name $time -ItemType "directory" -Force
+Write-Host $backupDir "created!"
 Write-Host ""
 Write-Host "Step 2: Backup Dexis"
 Write-Host ""
@@ -64,8 +69,8 @@ Write-Host "C. Select 'Settings' Tab"
 $condensed = "D. Set the directory to " + $global:x + "\" + $time
 Write-Host $condensed
 
-Write-Host "E. Select 'Perform backup tab"
-Write-Host "F. Press button to begin backup"
+Write-Host "E. Select 'Backup tab"
+Write-Host "F. Press button to start backup"
 Write-Host ""
 
 $UserInput = Read-Host "Once the Dexis backup has has started, type 'proceed' and hit enter"
@@ -103,14 +108,7 @@ elseif ($UserInput -eq 'c') {
 }
 
 if ($global:startTheBackup) {
-	if ($debug -eq 2) {
-		Start-Transcript -path $logDirectory -appen
-    }
-	## Peforms backup directory - Overwrite files applicable to ui selection##
-	$time = Get-Date -Format "MM.dd.yyyy"
-    $backupDir = $global:x + '/' + $time
-	Write-Host "Peforming backup at: " $backupDir
-	New-Item -Path $global:x -Name $time -ItemType "directory" -Force
+
 		
 	## Perform Dentrix Backup ##
 	Write-Host "Performing the Dentrix Backup..."
