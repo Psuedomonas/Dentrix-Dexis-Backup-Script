@@ -56,6 +56,7 @@ if (!$global:startTheBackup) {
     Write-Host "An error occured, try running the script again"
     Return
 }
+
 $backupDir = $global:x + '/' + $time
 New-Item -Path $global:x -Name $time -ItemType "directory" -Force
 Write-Host $backupDir "created!"
@@ -74,6 +75,7 @@ Write-Host "F. Press button to start backup"
 Write-Host ""
 
 $UserInput = Read-Host "Once the Dexis backup has has started, type 'proceed' and hit enter"
+
 if ($UserInput -ne 'proceed') {
     Do {
         $UserInput = Read-Host "Once the Dexis backup has has started, type 'proceed' and hit enter"
@@ -100,6 +102,7 @@ if ($UserInput -ne 'proceed') {
 }
 
 $UserInput = Read-Host "Now the final backup step (4). Do you want the computer to shutdown after it completes (y/n or c to cancel)?"
+
 if ($UserInput -eq 'y') {
     $global:shutdownComp = $true
 }
@@ -108,8 +111,6 @@ elseif ($UserInput -eq 'c') {
 }
 
 if ($global:startTheBackup) {
-
-		
 	## Perform Dentrix Backup ##
 	Write-Host "Performing the Dentrix Backup..."
 	Copy-Item $global:dentrix -Destination $backupDir -Recurse -Force
