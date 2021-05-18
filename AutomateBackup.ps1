@@ -89,6 +89,7 @@ Write-Host "E. Select 'Backup tab"
 Write-Host "F. Press button to start backup"
 Write-Host ""
 
+#Ensure that dexis update has been started. Since these backups can occur simultaneously, we only need to make sure the user has begun the backup
 $UserInput = Read-Host "Once the Dexis backup has has started, type 'proceed' and hit enter"
 if ($UserInput -ne 'proceed') {
     Do {
@@ -96,6 +97,7 @@ if ($UserInput -ne 'proceed') {
     }
     While ($UserInput -ne "proceed")
 }
+
 
 Write-Host "While the backup is occuring, we can begin the Dentrix backup"
 
@@ -107,6 +109,7 @@ Write-Host "B. Select Export Backup Tab"
 Write-Host "C: Press Export Backup Button"
 Write-Host ""
 
+#We need the _ServerAdmin.exe backup to be complete before we begin the final backup step
 $UserInput = Read-Host "Once the Dentrix _ServerAdmin backup has completed, type 'proceed' and hit enter"
 if ($UserInput -ne 'proceed') {
     Do {
@@ -115,6 +118,7 @@ if ($UserInput -ne 'proceed') {
     While ($UserInput -ne "proceed")
 }
 
+#User decides if computer should shutdown after backup, also given a chance to cancel the backup
 $UserInput = Read-Host "Now the final backup step (4). Do you want the computer to shutdown after it completes (y/n or c to cancel)?"
 if ($UserInput -eq 'y') {
     $global:shutdownComp = $true
@@ -123,9 +127,8 @@ elseif ($UserInput -eq 'c') {
     Return
 }
 
-if ($global:startTheBackup) {
 
-		
+if ($global:startTheBackup) {
 	## Perform Dentrix Backup ##
 	Write-Host "Performing the Dentrix Backup..."
 	Copy-Item $global:dentrix -Destination $backupDir -Recurse -Force
