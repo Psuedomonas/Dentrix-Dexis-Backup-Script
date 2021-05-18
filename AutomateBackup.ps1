@@ -26,7 +26,7 @@ Add-Type -assembly System.Windows.Forms
 $FolderBrowserDialog = New-Object System.Windows.Forms.FolderBrowserDialog
 
 
-if ($debug) {
+if ($debug) { #If true, start logging
 	Start-Transcript -path $logDirectory -appen
 }
 
