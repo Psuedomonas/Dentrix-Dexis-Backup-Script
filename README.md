@@ -1,9 +1,7 @@
 ## AutomateBackup.ps1
 #### Automate Dentrix (and vicariously Dexis) backup with powershell
-
-For Powershell version 5.1
-
-Nicholas Zehm
+#### For Powershell version 5.1
+#### Nicholas Zehm
 
 This is a console interface script that provides step by step instructions to backup Dexis, and automate a backup of Dentrix. The backup method for Dentrix is probably wasteful in the amount of files it copies, but it should ensure recovery.
 
