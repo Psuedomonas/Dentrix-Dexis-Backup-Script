@@ -16,4 +16,4 @@ Version 2.1 (8/30/21)
 
 Verson 2 (5/9/21)
 * Rewrite for console interface
-* Optimized protocol to minimize time, excess storage (Unfortatetly, it requires some focus by the user to utilize correctly)
+* Optimized protocol to minimize time, excess storage (Unfortately, it requires some focus by the user to utilize correctly)
