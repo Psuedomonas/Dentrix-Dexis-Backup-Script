@@ -17,3 +17,6 @@ Version 2.1 (8/30/21)
 Verson 2 (5/9/21)
 * Rewrite for console interface
 * Optimized protocol to minimize time, excess storage (Unfortunately, it requires some focus by the user to utilize correctly)
+
+## Bugs
+Sometimes the backup destination interface seems to not appear in task bar and fails to show up. If this is the case, try closing the script and starting over. 
