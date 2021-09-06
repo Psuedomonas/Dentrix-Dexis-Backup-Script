@@ -11,10 +11,8 @@ The version 1.x utilized a crude windows forms interface, but I found it to be u
 #### Changes: 
 	Added a check for sufficient disk size for backup
 	Code clean-up
-	Internal script name change
 
 ### Verson 2 (5/9/21)
 #### Changes: 
 	Rewrite for console interface
 	Optimized protocol to minimize time, excess storage (Unfortatetly, it requires some focus by the user to utilize correctly)
-
