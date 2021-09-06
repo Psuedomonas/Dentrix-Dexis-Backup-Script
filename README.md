@@ -1,5 +1,5 @@
 ## AutomateBackup.ps1
-### Automate Dentrix backup with powershell
+#### Automate Dentrix (and vicariously Dexis) backup with powershell
 
 For Powershell version 5.1
 
