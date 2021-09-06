@@ -1,38 +1,43 @@
 <#
-Dentrix (and vicariously Dexis) Autobackup Version 2
+backup-powershell.ps1
+Dentrix (and vicariously Dexis) Backup Scipt
+Version 2.1
 by Nicholas Zehm
-This version abandons the windows form interface and simply uses a console
 #>
 
-$global:dentrix = "C:\Dentrix\Common" #Adjust to Dentrix save directory, a more concise approach/directory may exist but this method has worked for recovery.
-
-
+<# 
+Configuration Variables -> Adjust these as needed
+#>
 #debug mode - Turns on a log, useful for checking for backup errors, but is set to append so it will grow overlarge eventually.
 $debug = $true
 
+#To be safe, we ensure there is 60Gb of free space. The exact amount required may be slightly variable, but it is usually in excess 40Gb
+$requiredspace = 60Gb
 
+#Adjust to Dentrix save directory, a more concise approach/directory may exist but this method has worked for recovery.
+$global:dentrix = "C:\Dentrix\Common"
+
+#The log directory
 if ($debug) {
-	$logDirectory = "C:\NicksLog\AutoBackupLog.txt"
+	$logDirectory = "C:\NicksLog\backup-powershell_Log.txt"
 }
 
-
+<#
+The Actual Script
+#> 
 # Boolean globals to direct backup script
 $global:shutdownComp = $false
 $global:startTheBackup = $false
-
 
 #Add GUI stuff
 Add-Type -assembly System.Windows.Forms
 $FolderBrowserDialog = New-Object System.Windows.Forms.FolderBrowserDialog
 
-
 if ($debug) { #If true, start logging
 	Start-Transcript -path $logDirectory -appen
 }
 
-
 Write-Host "Step 1: Choose backup directory"
-
 Write-Host "Choose the location to put backup"
 Write-Host ""
 Write-Host "(Note, a browser menu has appeared. It may be hidden so check your task bar if you don't see it...)"
@@ -43,7 +48,22 @@ $time = Get-Date -Format "MM.dd.yyyy"
 $testDir = $FolderBrowserDialog.SelectedPath + '\' + $time
 $alreadyThere = Test-Path $testDir -PathType Any
 
-       
+#Check drive freespace
+$backupDriveLetter = (Get-Item $testDir).PSDrive.Name
+$backupDeviceID = '"DeviceId=' + $backupDriveLetter + ":'" + '"'
+$freespace = (Get-CimInstance CIM_LogicalDisk -Filter $backupDrive).FreeSpace
+
+if ($freespace -gt  $actualspace) {
+	#proceed thru script
+}
+else {
+	#prompt user to exit script
+     Write-Host "Not enough space on the selected drive:" $backupDriveLetter
+     Write-Host "Please clear some space or use a different drive"
+     Return
+}
+
+#Check if directory already exists
 if (!$alreadyThere) {
 	$global:x = $FolderBrowserDialog.SelectedPath
     $global:startTheBackup = $true
@@ -52,23 +72,19 @@ else {
     Write-Host ""
     $UserInput = Read-Host "FILE ALREADY EXISTS! Over-write file? (y/n)?"
 
-
     if ($UserInput -eq 'y') {
         $global:x = $FolderBrowserDialog.SelectedPath
         $global:startTheBackup = $true
     }
 }
 
-
-
 if (!$global:startTheBackup) {
     Write-Host "An error occured, try running the script again"
     Return
 }
 
-
 #Note new directory for interface & documentation
-$backupDir = $global:x + '\' + $time
+$backupDir = $global:x + $time
 
 #Make the folder named from $time, in directory from global:x
 New-Item -Path $global:x -Name $time -ItemType "directory" -Force
@@ -82,7 +98,7 @@ Write-Host "B. Click lock button"
 Write-Host "C. Select 'Settings' Tab"
 
 #Easier to just make a string and print the string. Could just use $backupDir...
-$condensed = "D. Set the directory to " + $global:x + "\" + $time
+$condensed = "D. Set the destination directory to " + $global:x + $time
 Write-Host $condensed
 
 Write-Host "E. Select 'Backup tab"
@@ -98,9 +114,7 @@ if ($UserInput -ne 'proceed') {
     While ($UserInput -ne "proceed")
 }
 
-
 Write-Host "While the backup is occuring, we can begin the Dentrix backup"
-
 Write-Host ""
 Write-Host "Step 3: Initialize backup of Dentrix"
 Write-Host ""
@@ -127,7 +141,6 @@ elseif ($UserInput -eq 'c') {
     Return
 }
 
-
 if ($global:startTheBackup) {
 	## Perform Dentrix Backup ##
 	Write-Host "Performing the Dentrix Backup..."
@@ -144,3 +157,4 @@ if ($global:startTheBackup) {
 	}
 }
 Write-Host "Script Completed!!!"
+
