@@ -1,4 +1,5 @@
-## Automate Dentrix backup with powershell
+## Backup Powershell
+### Automate Dentrix backup with powershell
 
 For Powershell version 5.1
 
