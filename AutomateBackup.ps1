@@ -11,7 +11,7 @@ Configuration Variables -> Adjust these as needed
 #debug mode - Turns on a log, useful for checking for backup errors, but is set to append so it will grow overlarge eventually.
 $debug = $true
 
-#To be safe, we ensure there is 60Gb of free space. The exact amount required may be slightly variable, but it is usually in excess 40Gb
+#To be safe, we ensure there is 60Gb of free space. The exact amount required varies, but tends to exceed 151 Gb
 $requiredspace = 160Gb
 
 #Adjust to Dentrix save directory, a more concise approach/directory may exist but this method has worked for recovery.
