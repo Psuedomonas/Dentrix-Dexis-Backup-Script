@@ -12,7 +12,7 @@ Configuration Variables -> Adjust these as needed
 $debug = $true
 
 #To be safe, we ensure there is 60Gb of free space. The exact amount required may be slightly variable, but it is usually in excess 40Gb
-$requiredspace = 60Gb
+$requiredspace = 160Gb
 
 #Adjust to Dentrix save directory, a more concise approach/directory may exist but this method has worked for recovery.
 $global:dentrix = "C:\Dentrix\Common"
