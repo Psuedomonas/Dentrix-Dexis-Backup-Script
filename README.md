@@ -9,6 +9,8 @@ This is a console interface script that provides step by step instructions to ba
 
 The version 1.x utilized a crude windows forms interface, but I found it to be unnecessarily time consuming trying to sort out the GUI. The use case for this script, especially with the guide output, is exceptionally narrow, so I assume this script would be best used as a guide to develop other backup scripts rather than to be used exactly as is and as intended.
 
+The check for sufficient storage space should be set to the storage for at least one backup. It is currently set to 160Gb. The size is not consistant across different databases.
+
 ## Changes
 Version 2.1 (8/30/21)
 * Added a check for sufficient disk size for backup
