@@ -1,8 +1,8 @@
 # Automate Backup
 
 ## Essential Files
-  AutomateBackupFull.ps1 - script
-  AutomateBackupFull.bat - batch launcher
+    AutomateBackupFull.ps1 - script
+    AutomateBackupFull.bat - batch launcher
 
 ## Purpose
     Backup Dentrix and Dexis databases for system recovery and data security
