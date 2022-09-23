@@ -1,15 +1,20 @@
-Automate Backup Full
+#Automate Backup
 
-AutomateBackupFull.ps1 - script
+#Files
+    AutomateBackup.ps1 - script
+    AutomateBackup.bat - batch launcher
 
-AutomateBackupFull.bat - batch launcher
+#Purpose
+    Backup Dentrix and Dexis databases for system recovery and data security
+    
+These scripts use so called 'dumb' backups, as these are simple and safest for our situation. 'Dumb' refers to a whole backup, verses a 'Smart' backup of changes. This is the final version that supports the use of built in backup features of De
 
-These scripts use so called 'dumb' backups, as these are simple and safest for our situation. 'Dumb' refers to a whole backup, verses a 'Smart' backup of changes. This particular script copies the full directories of both Dexis and Dentrix as this seems to correlate to best recovery. Version 2.4 will remain the version for using Dentrix and Dexis backup features. However, 2.4 will not be maintained. Furthermore 2.5 will likely be the last version for the scripts intended purpose.
-
-Usage:
+#Usage:
 
     Check script to ensure backup directories are correct
-    If powershell execution policy does not enable remote unsigned scripts, use the AutomateBackupFull.bat to lauch script. (You may be able to add a local signature if you wish).
+    If powershell execution policy does not enable remote unsigned scripts, use the AutomateBackup.bat to lauch script. (You may be able to add a local signature if you wish).
     Follow the prompts the script provides
 
-Cheers Nicholas Zehm
+Cheers 
+
+Nicholas Zehm
