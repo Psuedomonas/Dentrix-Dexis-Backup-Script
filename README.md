@@ -11,9 +11,11 @@ These scripts use so called 'dumb' backups, as these are simple and safest for o
 
 ## Usage:
 
-    Check script to ensure backup directories are correct
-    If powershell execution policy does not enable remote unsigned scripts, use the AutomateBackup.bat to lauch script. (You may be able to add a local signature if you wish).
-    Follow the prompts the script provides
+1. Check script to ensure backup directories are correct
+
+2. If powershell execution policy does not enable remote unsigned scripts, use the AutomateBackup.bat to lauch script. (You may be able to add a local signature if you wish).
+
+3. Follow the prompts the script provides
 
 Cheers 
 
