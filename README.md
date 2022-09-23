@@ -1,6 +1,6 @@
 # Automate Backup
 
-## Files
+## Essential Files
     AutomateBackup.ps1 - script
     AutomateBackup.bat - batch launcher
 
