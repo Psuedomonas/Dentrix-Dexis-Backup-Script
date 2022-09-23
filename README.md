@@ -1,24 +1,8 @@
-# AutomateBackup
-Nicholas Zehm
+Automate Backup Full
 
-Automate Dentrix (and vicariously Dexis) backup with powershell
+AutomateBackupFull.ps1 - script
+AutomateBackupFull.bat - batch launcher
 
-Developed with Powershell version 5.1
-
-This is a console interface script that provides step by step instructions to backup Dexis, and automate a backup of Dentrix. The backup method for Dentrix is probably wasteful in the amount of files it copies, but it should ensure recovery.
-
-The version 1.x utilized a crude windows forms interface, but I found it to be unnecessarily time consuming trying to sort out the GUI. The use case for this script, especially with the guide output, is exceptionally narrow, so I assume this script would be best used as a guide to develop other backup scripts rather than to be used exactly as is and as intended.
-
-The check for sufficient storage space should be set to the storage for at least one backup. It is currently set to 160Gb. The size is not consistant across different databases.
-
-## Changes
-Version 2.1 (8/30/21)
-* Added a check for sufficient disk size for backup
-* Code clean-up
-
-Verson 2 (5/9/21)
-* Rewrite for console interface
-* Optimized protocol to minimize time, excess storage (Unfortunately, it requires some focus by the user to utilize correctly)
-
-## Bugs
-Sometimes the backup destination interface seems to not appear in task bar and fails to show up. If this is the case, try closing the script and starting over.
+These scripts use so called 'dumb' backups, as these are simple and safest for our situation. ('Dumb' refers to a whole backup, verses a 'Smart' backup of changes)
+This particular script copies the full directories of both Dexis and Dentrix as this seems to correlate to best recovery.
+Version 2.4 will remain the version for using Dentrix and Dexis backup features.
