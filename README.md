@@ -1,6 +1,7 @@
 Automate Backup Full
 
 AutomateBackupFull.ps1 - script
+
 AutomateBackupFull.bat - batch launcher
 
 These scripts use so called 'dumb' backups, as these are simple and safest for our situation. ('Dumb' refers to a whole backup, verses a 'Smart' backup of changes)
